@@ -1,57 +1,76 @@
 {
-  "description": "Proposed 40-symbol research universe. Validate current tradability, bar coverage, and index membership before any trading.",
+  "description": "Research-only universe from the user-provided Stock Portfolio.docx, titled “Kenneth C. Griffin / Citadel-Inspired Stock Universe.” Membership is not an instruction to buy.",
+  "classification": {
+    "status": "provisional",
+    "methodology": "The 12 growth satellites are a thematic proposal spanning semiconductors and memory, cybersecurity, digital assets, and mobility. The 28 diversified holdings are grouped by broad business sector. This split is not a measured beta ranking or a portfolio-allocation recommendation.",
+    "beta_evidence": "No ticker-level beta estimates were supplied or independently verified for this configuration; no member is represented here as proven high-beta.",
+    "index_membership_evidence": "Index membership has not been verified for this configuration. Constituency must be checked against current authoritative index sources before use.",
+    "ttwo_basis": "TTWO remains in the diversified consumer group based on Take-Two's official description as an interactive-entertainment developer and publisher and its official Nasdaq ticker listing. This is an industry grouping, not a beta or high-growth classification."
+  },
+  "portfolio_adjustments": [
+    {
+      "original_ticker": "EA",
+      "replacement_ticker": "TTWO",
+      "reason": "EA trading was suspended following completion of its acquisition. The Nasdaq notice states the merger closed after trading on August 4, 2026, with suspension effective August 5, 2026.",
+      "effective_suspension_date": "2026-08-05",
+      "sources": {
+        "nasdaq_notice": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-545",
+        "ttwo_official_listing": "https://www.take2games.com/ir"
+      }
+    }
+  ],
   "growth_satellites": [
     "NVDA",
     "TSLA",
+    "AVGO",
     "AMD",
-    "COIN",
-    "PLTR",
-    "APP",
-    "SMCI",
-    "MSTR",
-    "ARM",
+    "WDC",
+    "MU",
+    "SNDK",
+    "PANW",
+    "CRWD",
+    "UBER",
     "HOOD",
-    "RBLX",
-    "SNOW"
+    "COIN"
   ],
   "diversified": {
     "technology_communications": [
-      "MSFT",
       "AAPL",
+      "MSFT",
       "GOOGL",
-      "AMZN",
+      "WBD",
+      "ASML",
+      "NFLX",
       "META",
       "ORCL",
-      "CSCO",
-      "NFLX"
+      "CRM",
+      "QCOM",
+      "ADBE",
+      "TSM"
     ],
     "financials": [
+      "BRK.B",
       "JPM",
-      "GS",
-      "V",
-      "MA"
+      "MA",
+      "C",
+      "V"
     ],
     "healthcare": [
+      "BSX",
       "LLY",
-      "JNJ",
-      "ABBV",
       "UNH"
     ],
     "consumer": [
-      "WMT",
+      "AMZN",
       "COST",
-      "KO",
-      "PG",
-      "MCD",
-      "PEP"
+      "TTWO"
     ],
     "energy_industrials_other": [
+      "LMT",
       "XOM",
+      "CVX",
       "CAT",
-      "GE",
-      "NEE",
-      "LIN",
-      "CVX"
+      "GE"
     ]
   },
   "benchmark": "SPY",
