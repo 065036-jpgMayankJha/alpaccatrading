@@ -33,6 +33,20 @@ python -m pytest -q
 
 Core tests run offline and do not need Alpaca credentials or an LLM.
 
+## Deterministic research and CrewAI commentary
+
+Run a batched technical review from the repository root:
+
+```bash
+python trading_crew.py
+python trading_crew.py --symbols AAPL MSFT NVDA --timeframe 1Day --lookback "120 days"
+python trading_crew.py --deterministic-only --symbols AAPL MSFT
+```
+
+With no `LLM_PROVIDER` configured, the client explicitly runs in deterministic-only mode. Optional sequential CrewAI commentary supports Ollama (`LLM_PROVIDER=ollama`, `LLM_MODEL=llama3.1`, optionally `OLLAMA_BASE_URL`) or a LiteLLM-compatible cloud model (`LLM_PROVIDER=cloud`, a provider-qualified `LLM_MODEL`, and `LLM_API_KEY`). Put secrets in ignored `.env` or the process environment; never commit them. Alpaca credentials are read only by the existing market-data layer.
+
+Every completed run writes one Markdown file per research/review agent and a JSON run summary under `run_reports/`. Numeric features, weighted scores, actions, and reasons are computed by Python from one batched MCP feature request. Agent text is commentary only. Candidates are not orders and are never submitted to a broker.
+
 ## Initial signal ensemble
 
 Weights are configurable and are experimental starting hypotheses, not proven-optimal parameters:
@@ -51,10 +65,9 @@ Each supplied component must be normalised to `[-1, 1]`. Missing components are 
 
 ## Next steps
 
-1. Integrate the instructor's multi-stock CrewAI client and local MCP server.
-2. Implement Alpaca batch data retrieval in the MCP server, with pagination and request caching.
-3. Add structured agent report writing and portfolio/account snapshots.
-4. Build Streamlit UI and connect a human-approval flow to paper-only execution.
-5. Add integration tests with mocked API responses before any paper order is enabled.
+1. Evaluate the deterministic strategy with an out-of-sample backtest and document performance and drawdown.
+2. Add a separately configured optional news source and tests before including sentiment in signal scoring.
+3. Build a Streamlit research UI without bypassing the deterministic signal or risk boundaries.
+4. Add broker-paper integration only after human approval and mocked/integration safety tests are reviewed.
 
 Submission target: 28 October 2026. Profit is not guaranteed; report drawdown and benchmark-relative performance alongside returns.
