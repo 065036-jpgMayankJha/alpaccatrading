@@ -1,0 +1,23 @@
+strategy:
+  name: momentum_trend_ensemble
+  version: v1
+  score_min: -1.0
+  score_max: 1.0
+  buy_threshold: 0.45
+  sell_threshold: -0.45
+  # Research hypotheses only; validate out-of-sample and on paper.
+  weights:
+    trend: 0.30
+    momentum: 0.25
+    relative_strength: 0.20
+    volume: 0.10
+    news_sentiment: 0.15
+
+risk:
+  initial_equity_usd: 100000
+  cash_reserve_pct: 0.10
+  max_position_pct: 0.05
+  max_new_orders_per_run: 5
+  allow_short_selling: false
+  require_human_approval: true
+  paper_only: true

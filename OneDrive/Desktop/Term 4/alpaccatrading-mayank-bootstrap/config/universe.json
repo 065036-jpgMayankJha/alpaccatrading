@@ -1,0 +1,59 @@
+{
+  "description": "Proposed 40-symbol research universe. Validate current tradability, bar coverage, and index membership before any trading.",
+  "growth_satellites": [
+    "NVDA",
+    "TSLA",
+    "AMD",
+    "COIN",
+    "PLTR",
+    "APP",
+    "SMCI",
+    "MSTR",
+    "ARM",
+    "HOOD",
+    "RBLX",
+    "SNOW"
+  ],
+  "diversified": {
+    "technology_communications": [
+      "MSFT",
+      "AAPL",
+      "GOOGL",
+      "AMZN",
+      "META",
+      "ORCL",
+      "CSCO",
+      "NFLX"
+    ],
+    "financials": [
+      "JPM",
+      "GS",
+      "V",
+      "MA"
+    ],
+    "healthcare": [
+      "LLY",
+      "JNJ",
+      "ABBV",
+      "UNH"
+    ],
+    "consumer": [
+      "WMT",
+      "COST",
+      "KO",
+      "PG",
+      "MCD",
+      "PEP"
+    ],
+    "energy_industrials_other": [
+      "XOM",
+      "CAT",
+      "GE",
+      "NEE",
+      "LIN",
+      "CVX"
+    ]
+  },
+  "benchmark": "SPY",
+  "target_symbol_count": 40
+}
