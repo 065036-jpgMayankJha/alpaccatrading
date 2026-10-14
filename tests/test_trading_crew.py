@@ -1,5 +1,8 @@
 import asyncio
 import json
+import os
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -89,7 +92,7 @@ class FakeMCPClient:
         return self.payload
 
 
-def test_mcp_client_configures_current_python_and_closes_session():
+def test_mcp_client_configures_current_python_and_closes_session(monkeypatch):
     events = []
     params_seen = []
 
@@ -124,10 +127,13 @@ def test_mcp_client_configures_current_python_and_closes_session():
         params_seen.append(parameters)
         return FakeStdio()
 
+    monkeypatch.setenv("APCA_API_KEY_ID", "parent-dummy-key")
+    monkeypatch.setenv("APCA_API_SECRET_KEY", "parent-dummy-secret")
+    monkeypatch.setenv("PARENT_ONLY_SETTING", "inherited")
     client = MCPTechnicalDataClient(
         stdio_factory=stdio_factory,
         session_factory=lambda *_: FakeSession(),
-        server_env={"PATH": "test-path"},
+        server_env={"PATH": "override-path", "CHILD_ONLY_SETTING": "override"},
     )
 
     async def run():
@@ -140,7 +146,12 @@ def test_mcp_client_configures_current_python_and_closes_session():
     assert parameters.command == str(Path(__import__("sys").executable).resolve())
     assert parameters.args == ["-m", "servers.technical_indicators_mcp_server"]
     assert Path(parameters.cwd).is_dir()
-    assert parameters.env == {"PATH": "test-path"}
+    assert parameters.env["APCA_API_KEY_ID"] == "parent-dummy-key"
+    assert parameters.env["APCA_API_SECRET_KEY"] == "parent-dummy-secret"
+    assert parameters.env["PARENT_ONLY_SETTING"] == "inherited"
+    assert parameters.env["CHILD_ONLY_SETTING"] == "override"
+    assert parameters.env["PATH"] == "override-path"
+    assert parameters.env["PATH"] != os.environ.get("PATH")
     assert ("get_technical_features", {
         "symbols": ["AAPL"],
         "timeframe": "1Day",
@@ -151,6 +162,43 @@ def test_mcp_client_configures_current_python_and_closes_session():
     assert events[4:] == ["session_exit", "stdio_exit"]
     assert response["features"]["AAPL"]["status"] == "valid"
     assert client._session is None
+
+
+@pytest.mark.parametrize(
+    ("key_name", "secret_name"),
+    [
+        ("APCA_API_KEY_ID", "APCA_API_SECRET_KEY"),
+        ("ALPACA_API_KEY", "ALPACA_SECRET_KEY"),
+    ],
+)
+def test_alpaca_credential_aliases_are_readable_in_child_process(
+    key_name, secret_name
+):
+    child_env = dict(os.environ)
+    for name in (
+        "APCA_API_KEY_ID",
+        "APCA_API_SECRET_KEY",
+        "ALPACA_API_KEY",
+        "ALPACA_SECRET_KEY",
+    ):
+        child_env.pop(name, None)
+    child_env[key_name] = "child-dummy-key"
+    child_env[secret_name] = "child-dummy-secret"
+    child_code = (
+        "from src.data.alpaca_market_data import AlpacaMarketDataClient; "
+        "assert AlpacaMarketDataClient()._credentials() == "
+        "('child-dummy-key', 'child-dummy-secret')"
+    )
+    completed = subprocess.run(
+        [sys.executable, "-c", child_code],
+        cwd=Path(__file__).parents[1],
+        env=child_env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert completed.stdout == ""
 
 
 def test_mcp_tool_errors_malformed_result_and_missing_symbols_are_handled():
@@ -196,6 +244,9 @@ def test_universe_strategy_loaders_read_project_configuration():
     symbols, benchmark = load_universe()
     strategy = load_strategy_config()
     assert len(symbols) == 40
+    assert "TTWO" in symbols
+    assert "EA" not in symbols
+    assert "BRK.B" in symbols
     assert benchmark == "SPY"
     assert strategy["name"] == "momentum_trend_ensemble"
     assert strategy["version"] == "v1"

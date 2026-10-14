@@ -64,7 +64,9 @@ class MCPTechnicalDataClient:
     ) -> None:
         self.project_root = Path(project_root).resolve()
         self.python_executable = str(Path(python_executable).resolve())
-        self.server_env = dict(server_env) if server_env is not None else None
+        self.server_env = dict(os.environ)
+        if server_env is not None:
+            self.server_env.update(server_env)
         self._session_factory = session_factory
         self._stdio_factory = stdio_factory
         self._stack: AsyncExitStack | None = None

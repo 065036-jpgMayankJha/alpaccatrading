@@ -18,6 +18,8 @@ risk:
   cash_reserve_pct: 0.10
   max_position_pct: 0.05
   max_new_orders_per_run: 5
+  buy_notional_usd: 1000
+  max_feature_age_hours: 120
   allow_short_selling: false
   require_human_approval: true
   paper_only: true

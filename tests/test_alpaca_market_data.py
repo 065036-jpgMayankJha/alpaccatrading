@@ -86,6 +86,24 @@ def test_multi_symbol_batch_uses_one_endpoint_query_across_pages():
     assert batch.missing_symbols == ()
 
 
+def test_ticker_with_period_is_preserved_in_request_and_response():
+    requests = []
+
+    def transport(request, _timeout):
+        requests.append(request)
+        return MockResponse(
+            {"bars": {"BRK.B": [bar("2026-10-01T00:00:00Z", 500)]}}
+        )
+
+    batch = make_client(transport).fetch_bars(["brk.b"], "1Day", "30 days")
+
+    query = parse_qs(urlparse(requests[0].full_url).query)
+    assert query["symbols"] == ["BRK.B"]
+    assert tuple(batch.bars) == ("BRK.B",)
+    assert batch.bars["BRK.B"].iloc[0]["close"] == 500
+    assert batch.missing_symbols == ()
+
+
 def test_missing_symbols_are_returned_as_empty_frames_with_quality_error():
     client = make_client(lambda *_: MockResponse({"bars": {"AAPL": []}}))
     batch = client.fetch_bars(["AAPL", "MSFT"], "1Day", 30)
