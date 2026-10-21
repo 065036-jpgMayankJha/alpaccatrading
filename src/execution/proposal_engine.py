@@ -141,17 +141,23 @@ def load_policy(
             raise ProposalValidationError("Every diversified group must be a list.")
         diversified_symbols.extend(group)
     symbols = list(growth) + diversified_symbols
+    symbol_count = len(symbols)
+    is_default_universe = (
+        symbol_count == 40 and len(growth) == 12 and len(diversified_symbols) == 28
+    )
+    is_personal_portfolio = 10 <= symbol_count <= 15
     if (
         any(not isinstance(item, str) for item in symbols)
-        or len(symbols) != 40
-        or len(set(symbols)) != 40
-        or len(growth) != 12
-        or len(diversified_symbols) != 28
+        or len(set(symbols)) != symbol_count
         or set(growth).intersection(diversified_symbols)
-        or universe.get("target_symbol_count") != 40
+        or universe.get("target_symbol_count") != symbol_count
+        or not (is_default_universe or is_personal_portfolio)
         or any(not isinstance(item, str) or not _SYMBOL_RE.fullmatch(item) for item in symbols)
     ):
-        raise ProposalValidationError("Configured active universe must contain exactly 40 unique valid tickers.")
+        raise ProposalValidationError(
+            "Universe must be the canonical 40-symbol universe or an individual portfolio "
+            "with 10-15 unique valid tickers and a matching target_symbol_count."
+        )
     benchmark = universe.get("benchmark")
     if not isinstance(benchmark, str) or benchmark.strip().upper() != "SPY":
         raise ProposalValidationError("Universe benchmark must remain SPY.")

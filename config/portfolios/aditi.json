@@ -1,0 +1,36 @@
+{
+  "description": "Aditi independent Alpaca PAPER account universe. A research universe, not a mandatory buy list.",
+  "classification": {
+    "status": "personalized",
+    "profile": "diversified sectors",
+    "note": "No ticker is an automatic instruction to buy."
+  },
+  "growth_satellites": [],
+  "diversified": {
+    "media": [
+      "WBD",
+      "NFLX"
+    ],
+    "financials": [
+      "C",
+      "V"
+    ],
+    "healthcare": [
+      "BSX",
+      "LLY",
+      "UNH"
+    ],
+    "consumer": [
+      "AMZN",
+      "COST",
+      "TTWO"
+    ],
+    "industrials": [
+      "LMT",
+      "CAT",
+      "GE"
+    ]
+  },
+  "benchmark": "SPY",
+  "target_symbol_count": 13
+}

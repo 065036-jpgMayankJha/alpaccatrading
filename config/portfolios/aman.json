@@ -1,0 +1,30 @@
+{
+  "description": "Aman independent Alpaca PAPER account universe. A research universe, not a mandatory buy list.",
+  "classification": {
+    "status": "personalized",
+    "profile": "large-cap technology and financials",
+    "note": "No ticker is an automatic instruction to buy."
+  },
+  "growth_satellites": [],
+  "diversified": {
+    "technology_communications": [
+      "AAPL",
+      "MSFT",
+      "GOOGL",
+      "META",
+      "ORCL",
+      "CRM",
+      "QCOM",
+      "ADBE",
+      "ASML",
+      "TSM"
+    ],
+    "financials": [
+      "BRK.B",
+      "JPM",
+      "MA"
+    ]
+  },
+  "benchmark": "SPY",
+  "target_symbol_count": 13
+}

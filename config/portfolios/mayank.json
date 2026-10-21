@@ -1,0 +1,30 @@
+{
+  "description": "Mayank Jha independent Alpaca PAPER account universe. A research universe, not a mandatory buy list.",
+  "classification": {
+    "status": "personalized",
+    "profile": "growth-focused with energy exposure",
+    "note": "No ticker is an automatic instruction to buy."
+  },
+  "growth_satellites": [
+    "NVDA",
+    "TSLA",
+    "AVGO",
+    "AMD",
+    "WDC",
+    "MU",
+    "SNDK",
+    "PANW",
+    "CRWD",
+    "UBER",
+    "HOOD",
+    "COIN"
+  ],
+  "diversified": {
+    "energy": [
+      "XOM",
+      "CVX"
+    ]
+  },
+  "benchmark": "SPY",
+  "target_symbol_count": 14
+}
